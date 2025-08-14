@@ -176,7 +176,6 @@
             { name: "iPhone 16e", has5G: true, hasMmwave: false },
             { name: "iPhone SE (3rd Gen)", has5G: true, hasMmwave: false },
             // iPads with both mmWave and Sub-6GHz 5G
-            // Note: Apple has reportedly dropped mmWave from M4 iPads, but this may vary by region/model.
             { name: "iPad Pro 13-inch (M4)", has5G: true, hasMmwave: true },
             { name: "iPad Pro 11-inch (M4)", has5G: true, hasMmwave: true },
             { name: "iPad Pro 12.9-inch (6th Gen)", has5G: true, hasMmwave: true },
@@ -217,6 +216,11 @@
             { name: "iPhone (1st Gen)", has5G: false, hasMmwave: false },
             { name: "iPad Air 4th Gen", has5G: false, hasMmwave: false },
         ];
+        
+        // This function normalizes a string for better comparison
+        function normalizeString(str) {
+            return str.toLowerCase().replace(/[\s()-]/g, '');
+        }
 
         function checkMmwave() {
             const select = document.getElementById('device-select');
@@ -225,8 +229,8 @@
 
             // Prioritize text input if it's not empty
             if (textInput.value.trim() !== '') {
-                const text = textInput.value.toLowerCase();
-                const foundDevice = deviceData.find(device => text.includes(device.name.toLowerCase()));
+                const normalizedText = normalizeString(textInput.value);
+                const foundDevice = deviceData.find(device => normalizedText.includes(normalizeString(device.name)));
                 if (foundDevice) {
                     displayResult(foundDevice);
                     return;
